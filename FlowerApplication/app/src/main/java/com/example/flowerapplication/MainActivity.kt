@@ -74,29 +74,28 @@ class MainActivity : ComponentActivity() {
                                 Column(modifier = Modifier.padding(16.dp)) {
 
                                     Text(
-                                        text = "Flowers",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp)
-                                            .clickable {
-                                                navController.navigate("flowerNamesList") {
-                                                    popUpTo(navController.graph.findStartDestination().id) {
-                                                        saveState = true
-                                                    }
-                                                    launchSingleTop = true
-                                                    restoreState = true
-                                                }
-                                            }
+                                        text = "\uD83C\uDF37 Flowers Power \uD83C\uDF37",
+                                        style = TextStyle(
+                                            fontSize = 26.sp,
+                                            fontWeight = FontWeight.ExtraBold
+                                        )
                                     )
 
-
                                     // Jokes link
-                                    ClickableText(
-                                        text = AnnotatedString("Click here for jokes"),
-                                        onClick = { _ ->
-                                            startActivity(Intent(this@MainActivity, JokeListActivity::class.java))
-                                        },
-                                        modifier = Modifier.padding(16.dp)
+                                    Text(
+                                        text = AnnotatedString("\uD83D\uDE1C Click here for Jokes \uD83D\uDE1C"),
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .fillMaxWidth()
+                                            .clickable(
+                                                onClick = {
+                                                    startActivity(Intent(this@MainActivity, JokeListActivity::class.java))
+                                                }
+                                            ),
+                                        style = TextStyle(
+                                            fontSize = 20.sp,
+                                            fontWeight = FontWeight.Medium
+                                        )
                                     )
 
                                     // Close navigation drawer
@@ -139,9 +138,6 @@ class MainActivity : ComponentActivity() {
                                         composable("flowerList") {
                                             FlowerList(navController, flowerViewModel)
                                         }
-                                        composable("flowerNamesList") {
-                                            FlowersNamesList(navController, flowerViewModel)
-                                        }
                                         composable("flowerItem/details/{flowerName}") { backStackEntry ->
                                             val flowerName = backStackEntry.arguments?.getString("flowerName") ?: ""
                                             FlowerDetailItem(flowerName, navController, flowerViewModel)
@@ -152,34 +148,6 @@ class MainActivity : ComponentActivity() {
                     }
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun FlowersNamesList(
-    navController: NavHostController,
-    flowerViewModel: FlowerViewModel,
-) {
-    val flowers: List<Flower> by flowerViewModel.getFlowers().observeAsState(emptyList())
-    LazyColumn {
-        items(flowers) { flower ->
-            Text(
-                text = flower.name,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .clickable {
-                        navController.navigate("flowerItem/details/${flower.name}") {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-            )
-            Divider(color = Color.Gray, thickness = 1.dp)
         }
     }
 }
@@ -253,10 +221,10 @@ fun FlowerDetailItem(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Name: ${flower.name}",
-                style = TextStyle(fontWeight = FontWeight.Bold)
+                text = "${flower.name}",
+                style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
-            Text(text = "Place of Origin: ${flower.placeOfOrigin}")
+            Text(text = "Place of Origin: ${flower.placeOfOrigin}", fontSize = 16.sp)
             Spacer(modifier = Modifier.height(8.dp))
 
             // Display Colors
